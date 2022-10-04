@@ -34,7 +34,7 @@ describe("go_phish", () => {
     //   systemProgram: anchor.web3.SystemProgram.programId
     // }).rpc();
 
-    const tx = await program.methods.goPhish("google.com").accounts({
+    const tx = await program.methods.goPhish("google~com").accounts({
       phish: phishPDA,
       owner: myKey.publicKey
     }).rpc();

@@ -4,6 +4,10 @@ use anchor_spl::associated_token;
 use anchor_spl::token;
 use std::convert::TryFrom;
 
+// new additions
+// use hex_literal::hex;
+use sha1::{Sha1, Digest};
+
 declare_id!("DW5y8reFZuDN1DfxDnpeRqFXrusBcEJxErB8Mv4Lc4Vj");
 
 #[derive(Debug)]
@@ -28,8 +32,26 @@ pub fn init_handler(mut ctx: Context<Init>) -> Result<()> {
 pub fn go_phish_handler(mut ctx: Context<GoPhish>, mut url: String) -> Result<()> {
     let mut owner = &mut ctx.accounts.owner;
     let mut phish = &mut ctx.accounts.phish;
+    // create a Sha1 object
+    let mut hasher = Sha1::new();
 
-    msg!("{}", format!("{}~{}", url, phish.key()));
+    if url.contains("~") {
+        msg!("Invalid URL!");
+    } else {
+        // process input message
+        let mut url_string = url.to_string();
+        let mut b = "b".to_string();
+
+        b.push_str(&url_string);
+        hasher.update(url_string);
+
+        // acquire hash digest in the form of GenericArray,
+        // which in this case is equivalent to [u8; 20]
+        let result = hasher.finalize();
+        let function_name = "goPhish";
+
+        msg!("{}", format!("{}~{}~{:x}", function_name, url, result));
+    }
 
     Ok(())
 }
