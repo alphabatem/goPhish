@@ -1,0 +1,15 @@
+[features]
+seeds = true
+skip-lint = false
+[programs.devnet]
+go_phish = "DW5y8reFZuDN1DfxDnpeRqFXrusBcEJxErB8Mv4Lc4Vj"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "/Users/Temitope/.config/solana/id.json"
+
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
